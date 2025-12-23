@@ -54,9 +54,9 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = "com.github.ravirising26"
+                groupId = "com.github.anirudh-bhalala"
                 artifactId = "CustomAdapter-admob"
-                version = "1.0.0"
+                version = "1.0.11"
             }
         }
     }

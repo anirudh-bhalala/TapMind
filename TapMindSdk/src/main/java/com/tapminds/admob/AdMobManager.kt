@@ -564,6 +564,7 @@ class AdMobManager {
 
     fun loadAdViewAd(
         parameters: TapMindAdapterResponseParameters,
+        adId : String,
         adFormat: TapMindAdFormat,
         activity: Activity,
         listener: TapMindAdViewAdapterListener
@@ -578,7 +579,7 @@ class AdMobManager {
         adView = AdView(activity).apply {
             setAdSize(AdSize.BANNER)
 //            setAdSize(toAdSize(adFormat, isAdaptiveBanner, parameters, context))
-            adUnitId = "ca-app-pub-3940256099942544/6300978111" // TEST ID
+            adUnitId = adId // TEST ID
         }
 //
 //

@@ -70,7 +70,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = "com.github.ravirising26"
+                groupId = "com.github.anirudh-bhalala"
                 artifactId = "TapmindSdk"
                 version = "1.0.0"
             }

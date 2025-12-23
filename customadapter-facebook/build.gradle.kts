@@ -59,7 +59,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = "com.github.ravirising26"
+                groupId = "com.github.anirudh-bhalala"
                 artifactId = "CustomAdapter-facebook"
                 version = "1.0.0"
             }

@@ -4,16 +4,15 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 
-
 @Keep
 data class AdRequest(
-    @SerializedName("appName") val appName: String ?= null,
-    @SerializedName("placementName") val placementName: String ?= null,
-    @SerializedName("version") val version: String ?= null,
-    @SerializedName("platform") val platform: String ?= null,
-    @SerializedName("environment") val environment: String ?= null,
-    @SerializedName("adType") val adType: String ?= null,
-    @SerializedName("country") val country: String ?= null
+    @SerializedName("appName") val appName: String? = null,
+    @SerializedName("placementName") val placementName: String? = null,
+    @SerializedName("version") val version: String? = null,
+    @SerializedName("platform") val platform: String? = null,
+    @SerializedName("environment") val environment: String? = null,
+    @SerializedName("adType") val adType: String? = null,
+    @SerializedName("country") val country: String? = null
 )
 
 @Keep
@@ -22,7 +21,7 @@ data class AdResponse(
     @SerializedName("message") val message: String,
 //    @SerializedName("ads") val ads: List<Ad> = emptyList(),
     @SerializedName("error") val error: Error? = null,
-    @SerializedName("data") val data: List<DataItem?>?? = null
+    @SerializedName("data") val data: AdData? = null
 )
 
 @Keep
@@ -37,6 +36,14 @@ data class Error(
     @SerializedName("code") val code: Int
 )
 
+@Keep
+data class AdData(
+    @SerializedName("adapters")
+    val adapters: List<DataItem>? = emptyList(),
+
+    @SerializedName("appId")
+    val appId: String? = null
+)
 
 data class DataItem(
 
@@ -47,7 +54,10 @@ data class DataItem(
     val partner: String? = null,
 
     @field:SerializedName("priority")
-    val priority: Int? = null
+    val priority: Int? = null,
+
+    @field:SerializedName("app_id")
+    val appId: String? = null
 )
 
 data class AdError(val errorCode: Int, val errorMessage: String? = null)

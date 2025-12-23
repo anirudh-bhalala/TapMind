@@ -5,17 +5,17 @@ import retrofit2.Response
 import java.io.IOException
 
 interface TapMindRestManager {
-    suspend fun bidRequest(params: AdRequest): Result<String>
+    suspend fun bidRequest(params: AdRequest): Result<AdData>
 }
 
 class AdRestManagerImpl() : TapMindRestManager {
 
-    override suspend fun bidRequest(params: AdRequest): Result<String> {
+    override suspend fun bidRequest(params: AdRequest): Result<AdData> {
         val response = suspendSafeExecute { TapMindRestAdapterImpl.bidRequest(params) }
         return processResponse(response)
     }
 
-    private fun processResponse(response: Response<AdResponse>?): Result<String> {
+    private fun processResponse(response: Response<AdResponse>?): Result<AdData> {
         return try {
             if (response == null) {
                 return Failure(AdError(510, "Network connection error"))
@@ -24,7 +24,7 @@ class AdRestManagerImpl() : TapMindRestManager {
                 val responseBody = response.body()
                 responseBody?.let {
                     if (it.success) {
-                        it.data?.let { Success(Gson().toJson(it)) } ?:
+                        it.data?.let { Success(it) } ?:
                         Failure(AdError(it.error?.code ?: 3, it.error?.message ?: "No fill"))
 
 //                        if (it.ads.isEmpty()) {

@@ -33,8 +33,7 @@ class App : Application() {
 
             // Enable test mode by default for the current device. Cannot be run on the main thread.
 //            val currentGaid = AdvertisingIdClient.getAdvertisingIdInfo(this).id
-//
-//            Log.d("KISHAN","currentGaid : "+currentGaid)
+
 
 //            if (currentGaid != null) {
 //                initConfigBuilder.testDeviceAdvertisingIds = Collections.singletonList(currentGaid)

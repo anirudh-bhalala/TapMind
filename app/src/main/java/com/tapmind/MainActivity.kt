@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            Log.d("KISHAN",""+getAdId(this@MainActivity))
+            Log.d("Anirudh",""+getAdId(this@MainActivity))
         }
 
     }

@@ -16,7 +16,6 @@ import com.tapminds.ads.interstitial.TapMindInterstitialAdapterListener
 import com.tapminds.ads.native.TapMindNativeAdAdapterListener
 import com.tapminds.ads.native.TapMindNativeAdapter
 import com.tapminds.ads.reward.TapMindRewardedAdapterListener
-import com.tapminds.facebook.FbManager
 import com.tapminds.network.AdRequest
 import com.tapminds.network.AdRestManagerImpl
 import com.tapminds.network.Failure
@@ -90,7 +89,10 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
 //            }
 //
 //        })
-        onCompletionListener?.onCompletion(TapMindsAdapter.InitializationStatus.INITIALIZED_SUCCESS, "TapMinds Mediation Adapter initialized")
+        onCompletionListener?.onCompletion(
+            TapMindsAdapter.InitializationStatus.INITIALIZED_SUCCESS,
+            "TapMinds Mediation Adapter initialized"
+        )
     }
 
 //    private lateinit var admobManager: AdMobManager
@@ -195,7 +197,8 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
     ) {
         Log.d(TAG, "$TAG1 : loadBannerAd")
 
-        val map = AdRequest("crickbuz","dummy_placement_1","1.1.1","Android","dev","Banner","IN")
+        val map =
+            AdRequest("crickbuz", "dummy_placement_1", "1.1.1", "Android", "dev", "Banner", "IN")
 
         launch {
             val restManager = AdRestManagerImpl()
@@ -203,12 +206,26 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
             withContext(Dispatchers.Main) {
                 when (response) {
                     is Success -> {
-                        Log.d(TAG, "api call : "+response.data)
-                        AdMobManager.getInstance().loadAdViewAd(parameters,adFormat,activity as Activity,callback)
+                        Log.d(TAG, "api call : " + response.data)
+                        val adId = response.data.adapters?.get(0)?.adUnitId
+                            ?: "ca-app-pub-3940256099942544/6300978111"
+                        AdMobManager.getInstance().loadAdViewAd(
+                            parameters,
+                            adId,
+                            adFormat,
+                            activity as Activity,
+                            callback
+                        )
                     }
-                    is Failure ->{
-                        Log.d(TAG, "api call : "+response.error.errorCode)
-                        callback.onAdViewAdLoadFailed(TapMindAdapterError(response.error.errorCode,response.error.errorMessage!!))
+
+                    is Failure -> {
+                        Log.d(TAG, "api call : " + response.error.errorCode)
+                        callback.onAdViewAdLoadFailed(
+                            TapMindAdapterError(
+                                response.error.errorCode,
+                                response.error.errorMessage!!
+                            )
+                        )
                     }
                 }
             }
@@ -243,7 +260,7 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
 
     fun loadRewardedAd(
         parameters: TapMindAdapterResponseParameters,
-        context : Context,
+        context: Context,
         callback: TapMindRewardedAdapterListener
     ) {
         AdMobManager.getInstance().loadRewardedAd(parameters, context, callback)
@@ -266,7 +283,7 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
         callback: TapMindNativeAdAdapterListener?
     ) {
 
-        AdMobManager.getInstance().loadNativeAd(parameters!!,activity!!,callback!!)
+        AdMobManager.getInstance().loadNativeAd(parameters!!, activity!!, callback!!)
 //        FbManager.getInstance().loadNativeAd(parameters!!,  activity as Activity, callback!!)
     }
 
