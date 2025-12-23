@@ -56,7 +56,7 @@ afterEvaluate {
 
                 groupId = "com.github.anirudh-bhalala"
                 artifactId = "CustomAdapter-admob"
-                version = "1.0.11"
+                version = "1.0.12"
             }
         }
     }
