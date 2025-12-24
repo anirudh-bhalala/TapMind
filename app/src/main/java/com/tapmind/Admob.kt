@@ -196,15 +196,12 @@ class Admob {
                         }
 
                     }
-                    ad.show(context as Activity, object : OnUserEarnedRewardListener {
-                        override fun onUserEarnedReward(p0: RewardItem) {
-                            Log.d(
-                                TAG,
-                                "$TAG1 : showAdmobRewardAd onUserEarnedReward : " + p0.type + "" + p0.amount
-                            )
-                        }
-
-                    })
+                    ad.show(context as Activity) { p0 ->
+                        Log.d(
+                            TAG,
+                            "$TAG1 : showAdmobRewardAd onUserEarnedReward : " + p0.type + "" + p0.amount
+                        )
+                    }
                 }
 
                 override fun onAdFailedToLoad(adError: LoadAdError) {

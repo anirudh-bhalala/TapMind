@@ -1,7 +1,6 @@
 package com.tapmimd.ads.mediation.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.ads.VersionInfo
 import com.google.android.gms.ads.mediation.Adapter
@@ -23,13 +22,20 @@ import com.google.android.gms.ads.mediation.MediationRewardedAd
 import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
 import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
 import com.google.android.gms.ads.mediation.NativeAdMapper
+import com.tapminds.network.AdRequestPayload
+import com.tapminds.network.AdRequestPayloadHolder
+import java.util.Locale
 
 class TapMindAdapterAdmob() : Adapter() {
 
     private val TAG = "APP@@@"
     private val TAG1 = "TapMindAdapterAdmob"
 
-    override fun initialize(context: Context, initializationCallback: InitializationCompleteCallback, mediationConfigurations: List<MediationConfiguration>) {
+    override fun initialize(
+        context: Context,
+        initializationCallback: InitializationCompleteCallback,
+        mediationConfigurations: List<MediationConfiguration>
+    ) {
         initializationCallback.onInitializationSucceeded()
 //        Log.d(TAG, "$TAG1 initialize")
 
@@ -77,18 +83,34 @@ class TapMindAdapterAdmob() : Adapter() {
         callback: MediationAdLoadCallback<MediationBannerAd, MediationBannerAdCallback>
     ) {
         Log.d(TAG, "$TAG1 loadBannerAd")
-        val data = SampleBannerCustomEventLoader.getInstance(adConfig,callback)
+        val context = adConfig.context
+
+        AdRequestPayloadHolder.playLoad = AdRequestPayload(
+            appName = getAppName(context),
+            appVersion = getAppVersion(context),
+            adType = "Banner",
+            country = Locale.getDefault().country
+        )
+
+        val data = SampleBannerCustomEventLoader.getInstance(adConfig, callback)
         data.loadAdd()
     }
 
     override fun loadNativeAdMapper(
-        p0: MediationNativeAdConfiguration,
-        p1: MediationAdLoadCallback<NativeAdMapper?, MediationNativeAdCallback?>
+        adConfig: MediationNativeAdConfiguration,
+        callback: MediationAdLoadCallback<NativeAdMapper?, MediationNativeAdCallback?>
     ) {
         Log.d(TAG, "$TAG1 loadNativeAdMapper")
-        SampleNativeCustomEventLoader.getInstance(p0,p1).loadAd()
-    }
+        val context = adConfig.context
 
+        AdRequestPayloadHolder.playLoad = AdRequestPayload(
+            appName = getAppName(context),
+            appVersion = getAppVersion(context),
+            adType = "Native",
+            country = Locale.getDefault().country
+        )
+        SampleNativeCustomEventLoader.getInstance(adConfig, callback).loadAd()
+    }
 
 
     override fun loadInterstitialAd(
@@ -96,15 +118,29 @@ class TapMindAdapterAdmob() : Adapter() {
         callback: MediationAdLoadCallback<MediationInterstitialAd, MediationInterstitialAdCallback>
     ) {
         Log.d(TAG, "$TAG1 loadInterstitialAd")
+        val context = adConfig.context
+        AdRequestPayloadHolder.playLoad = AdRequestPayload(
+            appName = getAppName(context),
+            appVersion = getAppVersion(context),
+            adType = "Interstitial",
+            country = Locale.getDefault().country
+        )
         val loader = SampleInterstitialCustomEventLoader(adConfig, callback)
         loader.loadAd()
     }
 
 
     override fun loadAppOpenAd(
-        p0: MediationAppOpenAdConfiguration,
+        adConfig: MediationAppOpenAdConfiguration,
         callback: MediationAdLoadCallback<MediationAppOpenAd?, MediationAppOpenAdCallback?>
     ) {
+        val context = adConfig.context
+        AdRequestPayloadHolder.playLoad = AdRequestPayload(
+            appName = getAppName(context),
+            appVersion = getAppVersion(context),
+            adType = "AppOpen",
+            country = Locale.getDefault().country
+        )
         Log.d(TAG, "$TAG1 loadAppOpenAd")
     }
 
@@ -113,7 +149,14 @@ class TapMindAdapterAdmob() : Adapter() {
         callback: MediationAdLoadCallback<MediationRewardedAd?, MediationRewardedAdCallback?>
     ) {
         Log.d(TAG, "$TAG1 loadRewardedAd")
-        val data = SampleRewardedCustomEventLoader.getInstance(adConfig,callback!!)
+        val context = adConfig.context
+        AdRequestPayloadHolder.playLoad = AdRequestPayload(
+            appName = getAppName(context),
+            appVersion = getAppVersion(context),
+            adType = "Rewarded",
+            country = Locale.getDefault().country
+        )
+        val data = SampleRewardedCustomEventLoader.getInstance(adConfig, callback)
         data.loadAd()
 
     }
@@ -124,5 +167,25 @@ class TapMindAdapterAdmob() : Adapter() {
         callback: MediationAdLoadCallback<MediationRewardedAd?, MediationRewardedAdCallback?>
     ) {
         Log.d(TAG, "$TAG1 loadRewardedInterstitialAd")
+    }
+
+    private fun getAppVersion(context: Context): String {
+        return try {
+            val pIInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val appVersion = pIInfo.versionName.toString()
+            return appVersion
+        } catch (_: Exception) {
+            "unknown"
+        }
+    }
+
+    private fun getAppName(context: Context): String {
+        return try {
+            val applicationInfo = context.applicationInfo
+            val appName = context.packageManager.getApplicationLabel(applicationInfo).toString()
+            return appName
+        } catch (_: Exception) {
+            "Unknown"
+        }
     }
 }

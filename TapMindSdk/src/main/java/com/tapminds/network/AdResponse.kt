@@ -61,3 +61,14 @@ data class DataItem(
 )
 
 data class AdError(val errorCode: Int, val errorMessage: String? = null)
+
+data class AdRequestPayload(
+    val appName: String? = null,
+    val appVersion: String? = null,
+    val adType: String? = null,
+    val country: String? = null
+)
+
+object AdRequestPayloadHolder {
+    var playLoad: AdRequestPayload? = null
+}

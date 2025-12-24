@@ -17,6 +17,7 @@ import com.tapminds.ads.native.TapMindNativeAdAdapterListener
 import com.tapminds.ads.native.TapMindNativeAdapter
 import com.tapminds.ads.reward.TapMindRewardedAdapterListener
 import com.tapminds.network.AdRequest
+import com.tapminds.network.AdRequestPayloadHolder
 import com.tapminds.network.AdRestManagerImpl
 import com.tapminds.network.Failure
 import com.tapminds.network.Success
@@ -197,8 +198,16 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
     ) {
         Log.d(TAG, "$TAG1 : loadBannerAd")
 
+        val adPayload = AdRequestPayloadHolder.playLoad
+        val appName = adPayload?.appName
+        val appVersion = adPayload?.appVersion
+        val adType = adPayload?.adType
+        val country = adPayload?.country
+
+        Log.e("TapMindAdapterAdmob", "loadAdViewAd: $adPayload")
+
         val map =
-            AdRequest("crickbuz", "dummy_placement_1", "1.1.1", "Android", "dev", "Banner", "IN")
+            AdRequest(appName, "dummy_placement_1", appVersion, "Android", "dev", adType, country)
 
         launch {
             val restManager = AdRestManagerImpl()
@@ -240,8 +249,14 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
         context: Context,
         callback: TapMindInterstitialAdapterListener
     ) {
-
         Log.d(TAG, "$TAG1 : loadInterstitialAd")
+        val adPayload = AdRequestPayloadHolder.playLoad
+        val appName = adPayload?.appName
+        val appVersion = adPayload?.appVersion
+        val adType = adPayload?.adType
+        val country = adPayload?.country
+
+        Log.e("TapMindAdapterAdmob", "loadAdViewAd: $adPayload")
 
         AdMobManager.getInstance().loadInterstitialAd(parameters, context, callback)
 //        FbManager.getInstance().loadInterstitialAd(parameters, context as Activity, callback)
@@ -252,9 +267,7 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
         activity: Activity,
         callback: TapMindInterstitialAdapterListener
     ) {
-        AdMobManager.getInstance().showInterstitialAd(parameters, activity, callback)
 //        FbManager.getInstance().showInterstitialAd(parameters, activity, callback)
-
     }
 
 
@@ -263,6 +276,13 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
         context: Context,
         callback: TapMindRewardedAdapterListener
     ) {
+        val adPayload = AdRequestPayloadHolder.playLoad
+        val appName = adPayload?.appName
+        val appVersion = adPayload?.appVersion
+        val adType = adPayload?.adType
+        val country = adPayload?.country
+
+        Log.e("TapMindAdapterAdmob", "loadAdViewAd: $adPayload")
         AdMobManager.getInstance().loadRewardedAd(parameters, context, callback)
 //        FbManager.getInstance().loadRewardedAd(parameters, context as Activity, callback)
     }
@@ -282,7 +302,13 @@ class TapMindsMediationAdapter private constructor(private val context: Context)
         activity: Activity?,
         callback: TapMindNativeAdAdapterListener?
     ) {
+        val adPayload = AdRequestPayloadHolder.playLoad
+        val appName = adPayload?.appName
+        val appVersion = adPayload?.appVersion
+        val adType = adPayload?.adType
+        val country = adPayload?.country
 
+        Log.e("TapMindAdapterAdmob", "loadAdViewAd: $adPayload")
         AdMobManager.getInstance().loadNativeAd(parameters!!, activity!!, callback!!)
 //        FbManager.getInstance().loadNativeAd(parameters!!,  activity as Activity, callback!!)
     }

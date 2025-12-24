@@ -54,9 +54,9 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
 
-                groupId = "com.github.anirudh-bhalala"
+                groupId = "com.github.TapMind"
                 artifactId = "CustomAdapter-admob"
-                version = "1.0.12"
+                version = "1.0.13"
             }
         }
     }
